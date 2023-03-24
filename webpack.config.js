@@ -1,13 +1,12 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env) => ({
-  mode: 'development',
-  entry: './src/js/index.js',
+  entry: "./src/js/app.js",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle-[hash].js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "app-[hash].js",
     clean: true,
     environment: {
       // The environment supports arrow functions ('() => { ... }').
@@ -16,11 +15,11 @@ module.exports = (env) => ({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html'
+      template: "index.html",
     }),
     new MiniCssExtractPlugin({
-      filename: 'bundle-[hash].scss',
-    })
+      filename: "style-[hash].css",
+    }),
   ],
   devServer: {
     // static: {
@@ -28,10 +27,10 @@ module.exports = (env) => ({
     // },
     compress: true,
     port: 9000,
-    watchFiles: ['*.html', '*.css', '*.sass'],
+    watchFiles: ["*.html", "*.css", "*.sass"],
   },
   devtool: env.production ? "source-map" : "eval-source-map",
-  mode: env.production ? 'production' : 'development',
+  mode: env.production ? "production" : "development",
   module: {
     rules: [
       // ### Babel ###
@@ -39,13 +38,11 @@ module.exports = (env) => ({
         test: /\.m?js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: [
-              ['@babel/preset-env']
-            ]
-          }
-        }
+            presets: [["@babel/preset-env"]],
+          },
+        },
       },
       // ### SASS ###
       {
@@ -59,7 +56,26 @@ module.exports = (env) => ({
           "sass-loader",
         ],
       },
-    ]
-  }
-
+      // Download images
+      {
+        test: /\.(png|jpeg|jpg)/,
+        type: "asset/resource",
+        generator: {
+          filename: "images/[hash][ext]",
+        },
+      },
+      // {
+      //   test: /\.(png|jpe?g|gif)$/i,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: '[path][name].[ext]',
+      //   },
+      // },
+      // HTML-loader
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+    ],
+  },
 });

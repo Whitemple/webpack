@@ -1,10 +1,28 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-$bg-color: pink;
+$bg-color: red;
 
 body {
- background: $bg-color;
+  background: $bg-color;
+}
+div {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: red;
+  border: 2px solid black;
+  &:hover {
+    background-color: white;
+    cursor: pointer;
+  }
+}
+.image {
+  background-image: url(../images/cat.jpeg);
+  width: 600px;
+  height: 500px;
 }
